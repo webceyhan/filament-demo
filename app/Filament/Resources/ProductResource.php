@@ -97,14 +97,30 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_url')->label('Image'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('brand.name'),
-                Tables\Columns\IconColumn::make('is_visible')->boolean()->label('Visibility'),
-                Tables\Columns\TextColumn::make('price'),
-                Tables\Columns\TextColumn::make('quantity'),
-                Tables\Columns\TextColumn::make('published_at')->date(),
-                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\ImageColumn::make('image_url')
+                    ->label('Image'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('brand.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Visibility')
+                    ->sortable()
+                    ->toggleable()
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('price')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('quantity')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('published_at')
+                    ->sortable()
+                    ->date(),
+                Tables\Columns\TextColumn::make('type')
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
             ])
             ->filters([
                 //
