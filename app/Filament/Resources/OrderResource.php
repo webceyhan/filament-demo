@@ -6,6 +6,7 @@ use App\Enums\OrderStatus;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
+use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,7 +29,54 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Wizard::make([
+                    Forms\Components\Wizard\Step::make('Order Details')->schema([
+                        Forms\Components\TextInput::make('number')
+                            //  generate random order number ie. OR-12345678
+                            ->default('OR-' . random_int(100000, 99999999))
+                            ->disabled()
+                            ->required()
+                            ->dehydrated(),
+                        Forms\Components\Select::make('customer_id')
+                            ->relationship('customer', 'name')
+                            ->required()
+                            ->searchable()
+                            ->preload(),
+                        Forms\Components\Radio::make('status')
+                            ->inline()
+                            ->options(OrderStatus::options())
+                            ->default(OrderStatus::Pending)
+                            ->required(),
+                        Forms\Components\MarkdownEditor::make('notes')
+                            ->columnSpanFull()
+
+                    ])->columns(2),
+                    Forms\Components\Wizard\Step::make('Order Items')->schema([
+                        // add a repeatable fieldset for order items
+                        Forms\Components\Repeater::make('items')
+                            ->label(false)
+                            ->addActionLabel('Add Item')
+                            ->relationship()
+                            ->schema([
+                                Forms\Components\Select::make('product_id')
+                                    ->label('Product')
+                                    ->options(Product::query()->pluck('name', 'id'))
+                                    ->required()
+                                    ->searchable()
+                                    ->preload(),
+                                Forms\Components\TextInput::make('quantity')
+                                    ->numeric()
+                                    ->default(1)
+                                    ->minValue(1)
+                                    ->required(),
+                                Forms\Components\TextInput::make('unit_price')
+                                    ->required()
+                                    ->disabled()
+                                    ->numeric()
+                                    ->dehydrated(),
+                            ])->columns(3)
+                    ])
+                ])->columnSpanFull()
             ]);
     }
 
