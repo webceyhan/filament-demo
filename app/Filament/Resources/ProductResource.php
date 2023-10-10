@@ -123,7 +123,15 @@ class ProductResource extends Resource
                     ->toggledHiddenByDefault(),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('is_visible')
+                    ->label('Visibility')
+                    ->trueLabel('Only visible products')
+                    ->falseLabel('Only hidden products')
+                    ->native(false)
+                    ->boolean(),
+
+                Tables\Filters\SelectFilter::make('brand')                
+                    ->relationship('brand', 'name')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
