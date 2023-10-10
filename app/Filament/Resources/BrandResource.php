@@ -35,7 +35,23 @@ class BrandResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('url')
+                    ->label('Website URL')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\ColorColumn::make('primary_hex')
+                    ->label('Primary Color'),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Visibility')
+                    ->boolean()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Last Update')
+                    ->sortable()
+                    ->date()
             ])
             ->filters([
                 //
@@ -49,14 +65,14 @@ class BrandResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -64,5 +80,5 @@ class BrandResource extends Resource
             'create' => Pages\CreateBrand::route('/create'),
             'edit' => Pages\EditBrand::route('/{record}/edit'),
         ];
-    }    
+    }
 }
