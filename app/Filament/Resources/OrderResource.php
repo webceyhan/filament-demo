@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\OrderStatus;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
@@ -35,8 +36,30 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('number')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('customer.name')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state) => OrderStatus::from($state)->color())
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('total_price')
+                    ->sortable()
+                    ->searchable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()->money()
+                    ]),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
+                    ->sortable()
             ])
+
             ->filters([
                 //
             ])
