@@ -27,7 +27,27 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxValue(50),
+                    Forms\Components\TextInput::make('email')
+                        ->label('Email Address')
+                        ->required()
+                        ->email()
+                        ->unique(ignoreRecord: true),
+                    Forms\Components\TextInput::make('phone')
+                        ->label('Phone Number')
+                        ->maxValue(50),
+                    Forms\Components\DatePicker::make('date_of_birth'),
+                    Forms\Components\TextInput::make('city')
+                        ->required(),
+                    Forms\Components\TextInput::make('zip_code')
+                        ->required(),
+                    Forms\Components\TextInput::make('address')
+                        ->required()
+                        ->columnSpan('full'),
+                ])->columns(2),
             ]);
     }
 
