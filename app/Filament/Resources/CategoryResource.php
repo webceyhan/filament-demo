@@ -7,11 +7,13 @@ use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class CategoryResource extends Resource
 {
@@ -27,7 +29,34 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->live(onBlur: true)
+                        ->autofocus()
+                        ->afterStateUpdated(function (string $state, Set $set) {
+                            $set('slug', Str::slug($state));
+                        }),
+                    Forms\Components\TextInput::make('slug')
+                        ->required()
+                        ->disabled()
+                        ->unique(ignoreRecord: true)
+                        ->dehydrated(),
+                    Forms\Components\MarkdownEditor::make('description')
+                        ->columnSpanFull()
+                ])->columns(2),
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Status')->schema([
+                        Forms\Components\Toggle::make('is_visible')
+                            ->label('Visibility')
+                            ->helperText('Whether or not the category is visible to customers.')
+                            ->default(true),
+                    ]),
+                    Forms\Components\Section::make('Associations')->schema([
+                        Forms\Components\Select::make('parent_id')->relationship('parent', 'name'),
+                    ])
+                ])
             ]);
     }
 
@@ -38,7 +67,7 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category_id')
+                Tables\Columns\TextColumn::make('parent.name')
                     ->label('Parent')
                     ->default('N/A')
                     ->searchable()
