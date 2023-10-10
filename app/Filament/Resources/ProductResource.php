@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ProductType;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
@@ -25,7 +26,32 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make()->schema([
+                        Forms\Components\TextInput::make('name'),
+                        Forms\Components\TextInput::make('slug'),
+                        Forms\Components\MarkdownEditor::make('description')->columnSpan('full'),
+                    ])->columns(2),
+                    Forms\Components\Section::make('Pricing & Inventory')->schema([
+                        Forms\Components\TextInput::make('sku'),
+                        Forms\Components\TextInput::make('price'),
+                        Forms\Components\TextInput::make('quantity'),
+                        Forms\Components\Select::make('type')->options(ProductType::options()),
+                    ])->columns(2),
+                ]),
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Status')->schema([
+                        Forms\Components\Toggle::make('is_visible')->label('Visibility'),
+                        Forms\Components\Toggle::make('is_featured')->label('Featured'),
+                        Forms\Components\DatePicker::make('published_at')->label('Publish Date'),
+                    ]),
+                    Forms\Components\Section::make('Image')->schema([
+                        Forms\Components\FileUpload::make('image_url')->image(),
+                    ])->collapsible(),
+                    Forms\Components\Section::make('Associations')->schema([
+                        Forms\Components\Select::make('brand_id')->relationship('brand', 'name'),
+                    ])
+                ])
             ]);
     }
 
@@ -33,7 +59,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_url')->label('Image'),                   
+                Tables\Columns\ImageColumn::make('image_url')->label('Image'),
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('brand.name'),
                 Tables\Columns\IconColumn::make('is_visible')->boolean()->label('Visibility'),
@@ -54,14 +80,14 @@ class ProductResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -69,5 +95,5 @@ class ProductResource extends Resource
             'create' => Pages\CreateProduct::route('/create'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
-    }    
+    }
 }
