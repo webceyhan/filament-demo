@@ -62,7 +62,15 @@ class CustomerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    // wrapping the actions in a group without a dropdown
+                    // is useful for when you want to have divider lines
+                    Tables\Actions\ActionGroup::make([
+                        Tables\Actions\ViewAction::make(),
+                        Tables\Actions\EditAction::make(),
+                    ])->dropdown(false), // ending with a divider line
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
