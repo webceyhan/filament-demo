@@ -8,11 +8,13 @@ use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
@@ -28,25 +30,61 @@ class ProductResource extends Resource
             ->schema([
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make()->schema([
-                        Forms\Components\TextInput::make('name'),
-                        Forms\Components\TextInput::make('slug'),
-                        Forms\Components\MarkdownEditor::make('description')->columnSpan('full'),
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->unique(Product::class, 'name', ignoreRecord: true)
+                            ->live(onBlur: true)
+                            ->autofocus()
+                            ->afterStateUpdated(function (string $state, Set $set) {
+                                // Automatically generate a slug when the name is updated.
+                                $set('slug', Str::slug($state));
+                            }),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->disabled()
+                            ->unique(Product::class, 'slug', ignoreRecord: true)
+                            ->dehydrated(),
+                        Forms\Components\MarkdownEditor::make('description')
+                            ->columnSpan('full'),
                     ])->columns(2),
                     Forms\Components\Section::make('Pricing & Inventory')->schema([
-                        Forms\Components\TextInput::make('sku'),
-                        Forms\Components\TextInput::make('price'),
-                        Forms\Components\TextInput::make('quantity'),
+                        Forms\Components\TextInput::make('sku')
+                            ->label('SKU (Stock Keeping Unit)')
+                            ->unique(Product::class, 'sku', ignoreRecord: true)
+                            ->required(),
+                        Forms\Components\TextInput::make('price')
+                            ->numeric()
+                            ->prefix('$')
+                            ->required(),
+                        Forms\Components\TextInput::make('quantity')
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(100)
+                            ->default(1)
+                            ->required(),
                         Forms\Components\Select::make('type')->options(ProductType::options()),
                     ])->columns(2),
                 ]),
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Status')->schema([
-                        Forms\Components\Toggle::make('is_visible')->label('Visibility'),
-                        Forms\Components\Toggle::make('is_featured')->label('Featured'),
-                        Forms\Components\DatePicker::make('published_at')->label('Publish Date'),
+                        Forms\Components\Toggle::make('is_visible')
+                            ->label('Visibility')
+                            ->helperText('Whether or not the product is visible to customers.')
+                            ->default(true),
+                        Forms\Components\Toggle::make('is_featured')
+                            ->label('Featured')
+                            ->helperText('Whether or not the product is featured on the homepage.'),
+                        Forms\Components\DatePicker::make('published_at')
+                            ->label('Publish Date')
+                            ->helperText('The date the product will be available for purchase.')
+                            ->default(now()),
                     ]),
                     Forms\Components\Section::make('Image')->schema([
-                        Forms\Components\FileUpload::make('image_url')->image(),
+                        Forms\Components\FileUpload::make('image_url')
+                            ->label(false)
+                            ->directory('products')
+                            ->image()
+                            ->imageCropAspectRatio(null)
                     ])->collapsible(),
                     Forms\Components\Section::make('Associations')->schema([
                         Forms\Components\Select::make('brand_id')->relationship('brand', 'name'),
