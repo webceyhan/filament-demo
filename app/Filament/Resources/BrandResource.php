@@ -94,8 +94,21 @@ class BrandResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
+                    // wrapping the actions in a group without a dropdown
+                    // is useful for when you want to have divider lines
+                    Tables\Actions\ActionGroup::make([ 
+                        Tables\Actions\ViewAction::make(),
+                        Tables\Actions\EditAction::make(),
+                        Tables\Actions\ReplicateAction::make()
+                            ->label('Duplicate')
+                            ->beforeReplicaSaved(function (Brand $replica): void {
+                                // Runs after the record has been replicated but before it is saved to the database.
+
+                                // the name and slug fields must be unique so we append 'copy'                            
+                                $replica->name = $replica->name . ' copy';
+                                $replica->slug = $replica->slug . '-copy';
+                            }),
+                    ])->dropdown(false), // ending with a divider line
                     Tables\Actions\DeleteAction::make(),
                 ]),
             ])
