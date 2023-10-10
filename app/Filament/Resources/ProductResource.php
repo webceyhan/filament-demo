@@ -130,11 +130,13 @@ class ProductResource extends Resource
                     ->native(false)
                     ->boolean(),
 
-                Tables\Filters\SelectFilter::make('brand')                
+                Tables\Filters\SelectFilter::make('brand')
                     ->relationship('brand', 'name')
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->iconButton()
+                // ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
