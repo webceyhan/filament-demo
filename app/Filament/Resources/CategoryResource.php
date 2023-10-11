@@ -25,6 +25,17 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    //protected static bool $shouldRegisterNavigation = false;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // this is determine if the resource should 
+        // be registered (visible) in the navigation
+        // via the resource policy for the current user
+        return auth()->user()->can('viewAny', static::getModel());
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form
