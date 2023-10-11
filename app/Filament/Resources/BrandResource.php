@@ -25,6 +25,9 @@ class BrandResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    // enable global search
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -96,7 +99,7 @@ class BrandResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     // wrapping the actions in a group without a dropdown
                     // is useful for when you want to have divider lines
-                    Tables\Actions\ActionGroup::make([ 
+                    Tables\Actions\ActionGroup::make([
                         Tables\Actions\ViewAction::make(),
                         Tables\Actions\EditAction::make(),
                         Tables\Actions\ReplicateAction::make()

@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
@@ -25,6 +26,34 @@ class ProductResource extends Resource
     protected static ?string $navigationGroup = 'Shop';
 
     protected static ?int $navigationSort = 0;
+
+    // enable global search
+    protected static ?string $recordTitleAttribute = 'name';
+
+    // override default 50 records limit to optimise performance
+    protected static int $globalSearchResultsLimit = 10;
+
+    public static function getGloballySearchableAttributes(): array
+    {   // customise the global search attributes
+        // this will override the $recordTitleAttribute property
+        return ['name', 'sku', 'description'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {   // customise the global search result details
+        return [
+            'brand' => $record->brand->name,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            // here we do eager loading to reduce the number of queries
+            // otherwise $record->brand->name will cause lazy loading for each record
+            // that might cause performance issues on large datasets
+            ->with(['brand']);
+    }
 
     public static function form(Form $form): Form
     {
@@ -137,7 +166,7 @@ class ProductResource extends Resource
             ])
             ->actions([
                 // Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()->iconButton()
+                Tables\Actions\EditAction::make()->iconButton()
                 // ])
             ])
             ->bulkActions([

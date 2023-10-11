@@ -23,6 +23,9 @@ class CustomerResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    // enable global search
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form
