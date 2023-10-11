@@ -59,8 +59,12 @@ class OrderResource extends Resource
                             ->required()
                             ->searchable()
                             ->preload(),
-                        Forms\Components\Radio::make('status')
-                            ->inline()
+                        Forms\Components\TextInput::make('shipping_price')
+                        ->label('Shipping Cost')
+                            ->required()
+                            ->numeric()
+                            ->dehydrated(),
+                        Forms\Components\Select::make('status')                            
                             ->options(OrderStatus::options())
                             ->default(OrderStatus::Pending)
                             ->required(),
