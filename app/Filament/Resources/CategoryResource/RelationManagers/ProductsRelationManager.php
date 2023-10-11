@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\BrandResource\RelationManagers;
+namespace App\Filament\Resources\CategoryResource\RelationManagers;
 
 use App\Enums\ProductType;
 use Filament\Forms;
@@ -94,6 +94,10 @@ class ProductsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('brand.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_visible')
                     ->label('Visibility')
                     ->sortable()

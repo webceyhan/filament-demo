@@ -35,7 +35,6 @@ class CategoryResource extends Resource
         return auth()->user()->can('viewAny', static::getModel());
     }
 
-
     public static function form(Form $form): Form
     {
         return $form
@@ -108,7 +107,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ProductsRelationManager::class,
         ];
     }
 
