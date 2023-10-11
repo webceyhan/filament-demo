@@ -9,6 +9,8 @@ use App\Models\Order;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -78,18 +80,28 @@ class OrderResource extends Resource
                                     ->options(Product::query()->pluck('name', 'id'))
                                     ->required()
                                     ->searchable()
-                                    ->preload(),
+                                    ->preload()
+                                    ->reactive()
+                                    ->afterStateUpdated(function ($state, Set $set) {
+                                        $set('unit_price', Product::find($state)?->price ?? 0);
+                                    }),
                                 Forms\Components\TextInput::make('quantity')
                                     ->numeric()
                                     ->default(1)
                                     ->minValue(1)
-                                    ->required(),
+                                    ->required()
+                                    ->live()
+                                    ->dehydrated(),
                                 Forms\Components\TextInput::make('unit_price')
                                     ->required()
                                     ->disabled()
                                     ->numeric()
                                     ->dehydrated(),
-                            ])->columns(3)
+                                Forms\Components\Placeholder::make('total_price')
+                                    ->content(function (Get $get) {
+                                        return $get('quantity') * $get('unit_price');
+                                    })
+                            ])->columns(4)
                     ])
                 ])->columnSpanFull()
             ]);
