@@ -117,8 +117,7 @@ class ProductResource extends Resource
                     ]),
                     Forms\Components\Section::make('Image')->schema([
                         Forms\Components\FileUpload::make('image_url')
-                            ->label(false)
-                            ->directory('products')
+                            ->label(false)                        
                             ->image()
                             ->imageCropAspectRatio(null)
                     ])->collapsible(),
