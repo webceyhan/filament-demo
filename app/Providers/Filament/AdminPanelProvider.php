@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
@@ -52,10 +53,19 @@ class AdminPanelProvider extends PanelProvider
             // ->sidebarFullyCollapsibleOnDesktop() // full collapse without icons
             ->navigationItems([
                 NavigationItem::make('Source Code')
-                ->url('https://github.com/webceyhan/filament-demo', shouldOpenInNewTab: true)
-                ->icon('heroicon-o-globe-alt')
-                ->group('External Links')
-                ->sort(2)
+                    ->url('https://github.com/webceyhan/filament-demo', shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-globe-alt')
+                    ->group('External Links')
+                    ->sort(2)
+            ])
+            ->userMenuItems([
+                // add new item
+                MenuItem::make()
+                    ->label('Settings')
+                    ->url('--to-be-implemented--')
+                    ->icon('heroicon-o-cog-6-tooth'),
+                // customize existing item
+                'logout' => MenuItem::make()->label('Log Out')
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
