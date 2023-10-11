@@ -123,7 +123,14 @@ class ProductResource extends Resource
                             ->imageCropAspectRatio(null)
                     ])->collapsible(),
                     Forms\Components\Section::make('Associations')->schema([
-                        Forms\Components\Select::make('brand_id')->relationship('brand', 'name'),
+                        Forms\Components\Select::make('brand_id')
+                            ->relationship('brand', 'name')
+                            ->required(),
+                        Forms\Components\Select::make('categories')
+                            ->relationship('categories', 'name')
+                            ->preload()
+                            ->multiple()
+                            ->required(),
                     ])
                 ])
             ]);
