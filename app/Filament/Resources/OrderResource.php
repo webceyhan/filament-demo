@@ -25,6 +25,21 @@ class OrderResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::processing()->count();
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        // get processing orders count
+        $count = (int) static::getNavigationBadge();
+
+        // show warning badge if there are more than 10 orders 
+        // in processing state otherwise show success badge
+        return $count > 10 ? 'warning' : 'success';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

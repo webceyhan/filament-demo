@@ -2,12 +2,20 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Order Model
+ * 
+ * Local Scopes:
+ * @method static \Illuminate\Database\Eloquent\Builder processing()
+ */
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
@@ -29,5 +37,10 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function scopeProcessing(Builder $query): void
+    {
+        $query->where('status', OrderStatus::Processing);
     }
 }

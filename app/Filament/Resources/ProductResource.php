@@ -33,6 +33,11 @@ class ProductResource extends Resource
     // override default 50 records limit to optimise performance
     protected static int $globalSearchResultsLimit = 10;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function getGloballySearchableAttributes(): array
     {   // customise the global search attributes
         // this will override the $recordTitleAttribute property
