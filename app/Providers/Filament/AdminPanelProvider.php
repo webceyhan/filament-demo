@@ -48,6 +48,7 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
+            // ->breadcrumbs(false) // disable breadcrumbs
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->sidebarCollapsibleOnDesktop() // collapse with icons
             // ->sidebarFullyCollapsibleOnDesktop() // full collapse without icons
