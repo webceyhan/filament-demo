@@ -32,42 +32,52 @@ class BrandResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make()->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(function (string $state, Set $set) {
-                                $set('slug', Str::slug($state));
-                            }),
-                        Forms\Components\TextInput::make('slug')
-                            ->required()
-                            ->disabled()
-                            ->unique(ignoreRecord: true)
-                            ->dehydrated(),
-                        Forms\Components\TextInput::make('url')
-                            ->label('Website URL')
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->columnSpan('full'),
-                        Forms\Components\MarkdownEditor::make('description')
-                            ->columnSpan('full'),
-                    ])->columns(2),
-                ]),
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Status')->schema([
-                        Forms\Components\Toggle::make('is_visible')
-                            ->label('Visibility')
-                            ->helperText('Whether or not the brand is visible on the website.')
-                            ->default(true),
-                    ]),
-                    Forms\Components\Section::make('Color')->schema([
-                        Forms\Components\ColorPicker::make('primary_hex')
-                            ->label('Primary Color')
-                    ]),
-                ]),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(function (string $state, Set $set) {
+                                        $set('slug', Str::slug($state));
+                                    }),
+
+                                Forms\Components\TextInput::make('slug')
+                                    ->required()
+                                    ->disabled()
+                                    ->unique(ignoreRecord: true)
+                                    ->dehydrated(),
+
+                                Forms\Components\TextInput::make('url')
+                                    ->label('Website URL')
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->columnSpan('full'),
+
+                                Forms\Components\MarkdownEditor::make('description')
+                                    ->columnSpan('full'),
+                            ])->columns(2),
+                    ])->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make('Status')
+                            ->schema([
+                                Forms\Components\Toggle::make('is_visible')
+                                    ->label('Visibility')
+                                    ->helperText('Whether or not the brand is visible on the website.')
+                                    ->default(true),
+                            ]),
+
+                        Forms\Components\Section::make('Color')
+                            ->schema([
+                                Forms\Components\ColorPicker::make('primary_hex')
+                                    ->label('Primary Color')
+                            ]),
+                    ])->columnSpan(['lg' => 1]),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -77,16 +87,20 @@ class BrandResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('url')
                     ->label('Website URL')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\ColorColumn::make('primary_hex')
                     ->label('Primary Color'),
+
                 Tables\Columns\IconColumn::make('is_visible')
                     ->label('Visibility')
                     ->boolean()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Last Update')
                     ->sortable()
