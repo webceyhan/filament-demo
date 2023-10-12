@@ -39,6 +39,11 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function scopePending(Builder $query): void
+    {
+        $query->where('status', OrderStatus::Pending);
+    }
+
     public function scopeProcessing(Builder $query): void
     {
         $query->where('status', OrderStatus::Processing);
