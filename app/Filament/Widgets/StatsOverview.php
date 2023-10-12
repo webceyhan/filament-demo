@@ -15,6 +15,8 @@ class StatsOverview extends BaseWidget
     // you can also disable it by setting it to null
     protected static ?string $pollingInterval = '15s';
 
+    protected static ?int $sort = 2;
+
     protected function getStats(): array
     {
         return [

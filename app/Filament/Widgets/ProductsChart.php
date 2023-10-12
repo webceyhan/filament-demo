@@ -9,6 +9,8 @@ class ProductsChart extends ChartWidget
 {
     protected static ?string $heading = 'Chart';
 
+    protected static ?int $sort = 3;
+
     protected function getData(): array
     {
         [$products, $months] = $this->getProductsPerMonth();
