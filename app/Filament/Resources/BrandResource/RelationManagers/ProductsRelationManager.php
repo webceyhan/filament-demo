@@ -21,66 +21,87 @@ class ProductsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Tabs::make('Products')->tabs([
-                    Forms\Components\Tabs\Tab::make('Information')->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->unique(Product::class, 'name', ignoreRecord: true)
-                            ->live(onBlur: true)
-                            ->autofocus()
-                            ->afterStateUpdated(function (string $state, Set $set) {
-                                // Automatically generate a slug when the name is updated.
-                                $set('slug', Str::slug($state));
-                            }),
-                        Forms\Components\TextInput::make('slug')
-                            ->required()
-                            ->disabled()
-                            ->unique(Product::class, 'slug', ignoreRecord: true)
-                            ->dehydrated(),
-                        Forms\Components\MarkdownEditor::make('description')
-                            ->columnSpan('full'),
-                    ])->columns(2),
-                    Forms\Components\Tabs\Tab::make('Pricing & Inventory')->schema([
-                        Forms\Components\TextInput::make('sku')
-                            ->label('SKU (Stock Keeping Unit)')
-                            ->unique(Product::class, 'sku', ignoreRecord: true)
-                            ->required(),
-                        Forms\Components\TextInput::make('price')
-                            ->numeric()
-                            ->prefix('$')
-                            ->required(),
-                        Forms\Components\TextInput::make('quantity')
-                            ->numeric()
-                            ->minValue(1)
-                            ->maxValue(100)
-                            ->default(1)
-                            ->required(),
-                        Forms\Components\Select::make('type')->options(ProductType::options()),
-                    ])->columns(2),
-                    Forms\Components\Tabs\Tab::make('Additional Information')->schema([
-                        Forms\Components\Toggle::make('is_visible')
-                            ->label('Visibility')
-                            ->helperText('Whether or not the product is visible to customers.')
-                            ->default(true),
-                        Forms\Components\Toggle::make('is_featured')
-                            ->label('Featured')
-                            ->helperText('Whether or not the product is featured on the homepage.'),
-                        Forms\Components\DatePicker::make('published_at')
-                            ->label('Publish Date')
-                            ->helperText('The date the product will be available for purchase.')
-                            ->default(now()),
-                        Forms\Components\Select::make('categories')
-                            ->relationship('categories', 'name')
-                            ->preload()
-                            ->multiple()
-                            ->required(),
-                        Forms\Components\FileUpload::make('image_url')
-                            ->label(false)
-                            ->image()
-                            ->imageCropAspectRatio(null)
-                            ->columnSpanFull(),
-                    ])->columns(2),
-                ])->columnSpanFull()
+                Forms\Components\Tabs::make('Products')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Information')
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->live(onBlur: true)
+                                    ->autofocus()
+                                    ->afterStateUpdated(function (string $state, Set $set) {
+                                        // Automatically generate a slug when the name is updated.
+                                        $set('slug', Str::slug($state));
+                                    }),
+
+                                Forms\Components\TextInput::make('slug')
+                                    ->required()
+                                    ->disabled()
+                                    ->unique(ignoreRecord: true)
+                                    ->dehydrated(),
+
+                                // not needed because filament will automatically add relationship owner id
+                                // Forms\Components\Hidden::make('brand_id')
+                                //     ->default($this->getOwnerRecord()->id),
+
+                                Forms\Components\MarkdownEditor::make('description')
+                                    ->columnSpan('full'),
+                            ])->columns(2),
+
+                        Forms\Components\Tabs\Tab::make('Pricing & Inventory')
+                            ->schema([
+                                Forms\Components\TextInput::make('sku')
+                                    ->label('SKU (Stock Keeping Unit)')
+                                    ->unique(ignoreRecord: true)
+                                    ->required(),
+
+                                Forms\Components\TextInput::make('price')
+                                    ->numeric()
+                                    ->prefix('$')
+                                    ->required(),
+
+                                Forms\Components\TextInput::make('quantity')
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->maxValue(100)
+                                    ->default(1)
+                                    ->required(),
+
+                                Forms\Components\Select::make('type')
+                                    ->options(ProductType::options())
+                                    ->default(ProductType::Deliverable),
+                            ])->columns(2),
+
+                        Forms\Components\Tabs\Tab::make('Additional Information')
+                            ->schema([
+                                Forms\Components\Toggle::make('is_visible')
+                                    ->label('Visibility')
+                                    ->helperText('Whether or not the product is visible to customers.')
+                                    ->default(true),
+
+                                Forms\Components\Toggle::make('is_featured')
+                                    ->label('Featured')
+                                    ->helperText('Whether or not the product is featured on the homepage.'),
+
+                                Forms\Components\DatePicker::make('published_at')
+                                    ->label('Publish Date')
+                                    ->helperText('The date the product will be available for purchase.')
+                                    ->default(now()),
+
+                                Forms\Components\Select::make('categories')
+                                    ->relationship('categories', 'name')
+                                    ->preload()
+                                    ->multiple()
+                                    ->required(),
+
+                                Forms\Components\FileUpload::make('image_url')
+                                    ->label(false)
+                                    ->image()
+                                    ->imageCropAspectRatio(null)
+                                    ->columnSpanFull(),
+                            ])->columns(2),
+                    ])->columnSpanFull()
             ]);
     }
 
