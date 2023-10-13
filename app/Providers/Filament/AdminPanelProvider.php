@@ -92,6 +92,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                \pxlrbt\FilamentSpotlight\SpotlightPlugin::make()
             ]);
     }
 }
