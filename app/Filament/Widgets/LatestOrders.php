@@ -7,6 +7,7 @@ use App\Filament\Resources\OrderResource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Model;
 
 class LatestOrders extends BaseWidget
 {
@@ -37,6 +38,8 @@ class LatestOrders extends BaseWidget
                     ->label('Date')
                     ->date()
                     ->sortable()
-            ]);
+            ])
+            // adds a link on the record to the order resource
+            ->recordUrl(fn (Model $record): string => OrderResource::getUrl('edit', ['record' => $record]));
     }
 }
