@@ -61,11 +61,11 @@ class OrderResource extends Resource
                             ->searchable()
                             ->preload(),
                         Forms\Components\TextInput::make('shipping_price')
-                        ->label('Shipping Cost')
+                            ->label('Shipping Cost')
                             ->required()
                             ->numeric()
                             ->dehydrated(),
-                        Forms\Components\Select::make('status')                            
+                        Forms\Components\Select::make('status')
                             ->options(OrderStatus::options())
                             ->default(OrderStatus::Pending)
                             ->required(),
