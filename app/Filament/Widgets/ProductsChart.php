@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class ProductsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Total Transactions';
 
     protected static ?int $sort = 3;
 

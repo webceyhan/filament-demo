@@ -2,20 +2,21 @@
 
 namespace App\Filament\Widgets;
 
-use App\Enums\OrderStatus;
 use App\Models\Order;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
 
 class OrdersChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Orders';
 
     protected static ?int $sort = 3;
 
     protected function getData(): array
     {
-        $data = Order::select('status', DB::raw('count(*) as total'))
+        $data = Order::query()
+            ->select('status')
+            ->selectRaw('count(*) as total')
             ->groupBy('status')
             ->pluck('total', 'status')
             ->toArray();
@@ -25,10 +26,10 @@ class OrdersChart extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Orders',
-                    'data' => array_values($data)                    
+                    'data' => array_values($data)
                 ],
-                'labels' => OrderStatus::cases()
             ],
+            'labels' => array_keys($data),
         ];
     }
 
