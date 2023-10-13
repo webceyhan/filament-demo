@@ -67,6 +67,8 @@ class ProductSeeder extends Seeder
                         'sku' => \Illuminate\Support\Str::slug($productName),
                         'image_url' => 'https://via.placeholder.com/300x300',
                         'description' => $productName . '. Description.',
+                        // add random timestamp from beginning of this year
+                        'created_at' => now()->startOfYear()->addDays(rand(0, 365)),
                     ]);
 
                     $product->categories()->attach($category);
