@@ -32,7 +32,7 @@ return [
         ],
     ],
 
-    'default_guard_name' => null,
+    'default_guard_name' => 'web', // Default guard name to be used in the UI
 
     'model_filter_key' => 'return \'%\'.$key;', // Eg: 'return \'%\'.$key.'\%\';'
 
@@ -42,7 +42,7 @@ return [
 
         'guard_names' => [
             'web',
-            'api',
+            // 'api', // api is not used in this project
         ],
 
         'permission_affixes' => [
