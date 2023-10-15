@@ -2,27 +2,18 @@
 
 namespace App\Policies;
 
+use Illuminate\Auth\Access\Response;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class CategoryPolicy
 {
-    /**
-     * Perform pre-authorization checks.
-     */
-    public function before(User $user, string $ability): bool|null
-    {
-        // deny everything besides admin for demo purposes
-        return $user->isAdmin();
-    }
-
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->can('view-any Category');
     }
 
     /**
@@ -30,7 +21,7 @@ class CategoryPolicy
      */
     public function view(User $user, Category $category): bool
     {
-        return false;
+        return $user->can('view Category');
     }
 
     /**
@@ -38,7 +29,7 @@ class CategoryPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->can('create Category');
     }
 
     /**
@@ -46,7 +37,7 @@ class CategoryPolicy
      */
     public function update(User $user, Category $category): bool
     {
-        return false;
+        return $user->can('update Category');
     }
 
     /**
@@ -54,7 +45,7 @@ class CategoryPolicy
      */
     public function delete(User $user, Category $category): bool
     {
-        return false;
+        return $user->can('delete Category');
     }
 
     /**
@@ -62,7 +53,7 @@ class CategoryPolicy
      */
     public function restore(User $user, Category $category): bool
     {
-        return false;
+        return $user->can('restore Category');
     }
 
     /**
@@ -70,6 +61,6 @@ class CategoryPolicy
      */
     public function forceDelete(User $user, Category $category): bool
     {
-        return false;
+        return $user->can('force-delete Category');
     }
 }
