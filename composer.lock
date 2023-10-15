@@ -4,8 +4,71 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ddb406cc88491fa2850338234b280e3",
+    "content-hash": "3dca9e5e5d811fd535f985c981f52c7c",
     "packages": [
+        {
+            "name": "althinect/filament-spatie-roles-permissions",
+            "version": "v2.0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Althinect/filament-spatie-roles-permissions.git",
+                "reference": "516ff3ccf5b86d13faed8995a60753761d8239b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Althinect/filament-spatie-roles-permissions/zipball/516ff3ccf5b86d13faed8995a60753761d8239b7",
+                "reference": "516ff3ccf5b86d13faed8995a60753761d8239b7",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/support": "^9|^10",
+                "php": "^8.1|^8.2",
+                "spatie/laravel-permission": "^5.4"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.10",
+                "orchestra/testbench": "^7.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Althinect\\FilamentSpatieRolesPermissions\\FilamentSpatieRolesPermissionsServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentSpatieRolesPermissions": "Althinect\\FilamentSpatieRolesPermissions\\FilamentSpatieRolesPermissionsFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Althinect\\FilamentSpatieRolesPermissions\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tharinda Rodrigo",
+                    "email": "tharindarodrigo@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "homepage": "https://github.com/althinect/filament-spatie-roles-permissions",
+            "keywords": [
+                "althinect",
+                "filament-spatie-roles-permissions"
+            ],
+            "support": {
+                "issues": "https://github.com/Althinect/filament-spatie-roles-permissions/issues",
+                "source": "https://github.com/Althinect/filament-spatie-roles-permissions/tree/v2.0.14"
+            },
+            "time": "2023-10-07T21:33:06+00:00"
+        },
         {
             "name": "anourvalar/eloquent-serialize",
             "version": "1.2.16",
@@ -5604,6 +5667,88 @@
             "time": "2023-08-23T09:04:39+00:00"
         },
         {
+            "name": "spatie/laravel-permission",
+            "version": "5.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-permission.git",
+                "reference": "0a35e99da4cb6f85b07b3b58b718ff659c39a009"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/0a35e99da4cb6f85b07b3b58b718ff659c39a009",
+                "reference": "0a35e99da4cb6f85b07b3b58b718ff659c39a009",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^7.0|^8.0|^9.0|^10.0",
+                "illuminate/container": "^7.0|^8.0|^9.0|^10.0",
+                "illuminate/contracts": "^7.0|^8.0|^9.0|^10.0",
+                "illuminate/database": "^7.0|^8.0|^9.0|^10.0",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0|^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^9.4",
+                "predis/predis": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "5.x-dev",
+                    "dev-master": "5.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Permission\\PermissionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Permission\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Permission handling for Laravel 6.0 and up",
+            "homepage": "https://github.com/spatie/laravel-permission",
+            "keywords": [
+                "acl",
+                "laravel",
+                "permission",
+                "permissions",
+                "rbac",
+                "roles",
+                "security",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-permission/issues",
+                "source": "https://github.com/spatie/laravel-permission/tree/5.11.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-08-30T23:41:24+00:00"
+        },
+        {
             "name": "symfony/console",
             "version": "v6.3.4",
             "source": {
@@ -10716,5 +10861,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
