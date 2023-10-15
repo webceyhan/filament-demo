@@ -24,6 +24,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
+
     public function register(): void
     {
         parent::register();
@@ -61,6 +62,11 @@ class AdminPanelProvider extends PanelProvider
                     ->group('External Links')
                     ->sort(2)
             ])
+            ->navigationGroups([ // order of groups
+                'Shop',
+                'Roles and Permissions',
+                'External Links',
+            ])
             ->userMenuItems([
                 // add new item
                 MenuItem::make()
@@ -96,6 +102,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                \Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin::make(),
                 \pxlrbt\FilamentSpotlight\SpotlightPlugin::make()
             ]);
     }
