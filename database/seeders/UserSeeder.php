@@ -42,7 +42,15 @@ class UserSeeder extends Seeder
                 'name' => 'Joe Bloggs',
                 'email' => 'admin@demo.com',
             ])
-            ->assignRole('admin');
+            ->assignRole($adminRole);
+
+        // create normal test user
+        User::factory()
+            ->create([
+                'name' => 'Test User',
+                'email' => 'user@demo.com',
+            ])
+            ->assignRole($userRole);
 
         // create normal users
         User::factory(10)
