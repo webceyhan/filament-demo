@@ -3,25 +3,25 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\Response;
-use App\Models\Category;
+use App\Models\Customer;
 use App\Models\User;
 
-class CategoryPolicy
+class CustomerPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view-any Category');
+        return $user->can('view-any Customer');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Category $category): bool
+    public function view(User $user, Customer $customer): bool
     {
-        return $user->can('view Category');
+        return $user->can('view Customer');
     }
 
     /**
@@ -29,38 +29,38 @@ class CategoryPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create Category');
+        return $user->can('create Customer');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Category $category): bool
+    public function update(User $user, Customer $customer): bool
     {
-        return $user->can('update Category');
+        return $user->can('update Customer');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Category $category): bool
+    public function delete(User $user, Customer $customer): bool
     {
-        return $user->can('delete Category');
+        return $user->can('delete Customer');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Category $category): bool
+    public function restore(User $user, Customer $customer): bool
     {
-        return $user->can('restore Category');
+        return $user->can('restore Customer');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Category $category): bool
+    public function forceDelete(User $user, Customer $customer): bool
     {
-        return $user->can('force-delete Category');
+        return $user->can('force-delete Customer');
     }
 }

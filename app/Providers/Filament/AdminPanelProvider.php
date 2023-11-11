@@ -24,15 +24,6 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
-    public function register(): void
-    {
-        parent::register();
-
-        FilamentView::registerRenderHook('panels::body.end', function (): string {
-            return Blade::render("@vite('resources/js/app.js')");
-        });
-    }
-
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -60,6 +51,11 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-globe-alt')
                     ->group('External Links')
                     ->sort(2)
+            ])
+            ->navigationGroups([ // order of groups
+                'Shop',
+                'Roles and Permissions',
+                'External Links',
             ])
             ->userMenuItems([
                 // add new item
@@ -96,6 +92,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                \Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin::make(),
                 \pxlrbt\FilamentSpotlight\SpotlightPlugin::make()
             ]);
     }
